@@ -1,8 +1,7 @@
 //ONLY USED TO TEST IF WHEELS WORK 
-
 // <WM1 PIN DEFINITIONS>
-#define M3_PWM 5
-#define M3_DIR 12
+#define M2_PWM 3
+#define M2_DIR 8
 
 #define M4_PWM 11
 #define M4_DIR 13
@@ -16,17 +15,6 @@
 // <GLOBAL DECLARATIONS>
 int duty = 0;    // variable to store duty cycle which controls the motor's effective voltage (range 0-255)
 
-/* <WIRING DESCRIPTION>                        
-Standard brushed DC gearmotor wired to M1 outputs
-*/
-
-/* <FUNCTIONALITY DESCRIPTION>
-  This example code demonstrates how to use one of the WM1's four solid state motor drivers
-  to PWM/voltage control a brushed DC motor. This allows the user to vary a motors speed.
-
-  Using this code, the motor's speed should ramp up to the maximum and then ramp back down to zero.
-  The dirrection will then swap and the motor speed will ramp up and down spinning the other way.
-*/
 
 void setup() {
   // put your setup code here, to run once:
@@ -35,8 +23,8 @@ void setup() {
     while not all pins are used in this example it is good practice to 
     configure them as outputs so that they are not left floating */
   // Used Pins    
-  pinMode(M3_PWM, OUTPUT);
-  pinMode(M3_DIR, OUTPUT);
+  pinMode(M2_PWM, OUTPUT);
+  pinMode(M2_DIR, OUTPUT);
   pinMode(M4_PWM, OUTPUT);
   pinMode(M4_DIR, OUTPUT);
   //pinMode(RELAY1, OUTPUT);
@@ -44,33 +32,43 @@ void setup() {
   //pinMode(SERVO1, OUTPUT);
   //pinMode(SERVO2, OUTPUT);
 }
-
 void loop() {
   // put your main code here, to run repeatedly:
 
   // DIR pin dictates motor's dirrection
   // PWM pin dictates the motor's voltage, which loosely controls speed
 
-  // <SET M3 DIRECTION TO FORWARDS>
-  digitalWrite(M3_DIR, HIGH); 
+  // <SET M3 DIRECTION TO FORWARDS assuming backwheel drive>
+  digitalWrite(M2_DIR, HIGH); 
   digitalWrite(M4_DIR, HIGH); 
+  delay(10);
 
-  // <RAMP SPEED UP AND THEN DOWN>
-  for (duty = 0; duty <= 255; duty += 1) {  // loop will increase variable 'duty' up from 0 to 255
-    analogWrite(M3_PWM, duty);              // motor 3 duty cycle set to value of variable 'duty'
-    delay(4);                               // delay will wait 4ms to slow loop down                
-  }
-  for (duty = 0; duty <= 255; duty += 1) {  // loop will increase variable 'duty' up from 0 to 255
-    analogWrite(M4_PWM, duty);              // motor 3 duty cycle set to value of variable 'duty'
-    delay(4);                               // delay will wait 4ms to slow loop down                
-  }
 
-  for (duty = 255; duty >= 0; duty -= 1) {  // loop will decrease variable 'duty' down from 255 to 0
-    analogWrite(M3_PWM, duty);              // motor 3 duty cycle set to value of variable 'duty'
-    delay(4);                               // delay will wait 4ms to slow loop down                
-  }
-  for (duty = 255; duty >= 0; duty -= 1) {  // loop will decrease variable 'duty' down from 255 to 0
-    analogWrite(M4_PWM, duty);              // motor 3 duty cycle set to value of variable 'duty'
-    delay(4);                               // delay will wait 4ms to slow loop down                
-  }
+  digitalWrite(M2_DIR, LOW); 
+  digitalWrite(M4_DIR, LOW); 
+  delay(10);
+
+// ROTATES 
+  digitalWrite(M2_DIR, HIGH); 
+  digitalWrite(M4_DIR, LOW); 
+  delay(5);
+
+  digitalWrite(M2_DIR, HIGH); 
+  digitalWrite(M4_DIR, HIGH); 
+  delay(10);
+
+// stop to allow seesaw to tilt
+  analogWrite(M2_PWM, 0); // Stop motor M2
+  analogWrite(M4_PWM, 0); // Stop motor M4
+
+  digitalWrite(M2_DIR, HIGH); 
+  digitalWrite(M4_DIR, HIGH); 
+  delay(10);
+
+  digitalWrite(M2_DIR, HIGH); 
+  digitalWrite(M4_DIR, LOW); 
+  delay(5);
+
+
 }
+
