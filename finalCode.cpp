@@ -13,7 +13,7 @@ void loop() {
 
   if (switchState == HIGH) {
     digitalWrite(ledPin, HIGH);              // Turn LED ON
-    Serial.println("I can read pin 22");     // Print message
+    Serial.println("I can read pin 22");     // CHANGE TO FINAL CODE
   } else {
     digitalWrite(ledPin, LOW);               // Turn LED OFF
   }
