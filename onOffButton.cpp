@@ -1,20 +1,20 @@
-const int switchPin = 5;
-const int outputPin = 6;
+const int switchPin = 22;  // Toggle switch input
+const int ledPin = 23;     // LED output
 
 void setup() {
-  pinMode(switchPin, INPUT_PULLUP);
-  pinMode(outputPin, OUTPUT);
+  pinMode(switchPin, INPUT);   // Read switch state
+  pinMode(ledPin, OUTPUT);     // Control LED
+
+  Serial.begin(9600);          // Start the serial monitor
 }
 
-
 void loop() {
-  static boolean oldSwitchState = digitalRead(switchPin);
-  boolean newSwitchState = digitalRead(switchPin);
-  if (newSwitchState != oldSwitchState) {
-    // Switch has changed state.  Remember the new state
-    oldSwitchState = newSwitchState;
-    digitalWrite(outputPin, HIGH);
-    delay(100);  // Pulse length
-    digitalWrite(outputPin, LOW);
+  int switchState = digitalRead(switchPin);
+
+  if (switchState == HIGH) {
+    digitalWrite(ledPin, HIGH);              // Turn LED ON
+    Serial.println("I can read pin 22");     // Print message
+  } else {
+    digitalWrite(ledPin, LOW);               // Turn LED OFF
   }
 }
