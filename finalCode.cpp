@@ -6,9 +6,11 @@
 #define M4_PWM 11
 #define M4_DIR 13
 
-// Switch setup
-const int switchPin = 22;  // switch input
+// pin setup (and switch setup)
+const int switchPin = 43;  // switch input
 const int ledPin = 23;     // LED output
+const int cupInterruptPin = 21; // interrupt pin
+volatile bool cupTriggered = false; // quick interrupt
 
 // Servo setup
 Servo bigServo;
@@ -18,10 +20,21 @@ Servo smallServo2;
 int pos = 0;
 int duty = 0;    // variable to store duty cycle which controls the motor's effective voltage (range 0-255)
 
+  void cupInterrupt() {
+  cupTriggered = true;
+}
 
 void setup() {
-  pinMode(switchPin, INPUT);   // Read switch state
-  pinMode(ledPin, OUTPUT);     // Control LED
+  pinMode(switchPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+  pinMode(cupInterruptPin, INPUT);
+
+// interrupt pins are 2,3,18,19,20,21
+// choose an interupt pin - interupt 1 and 0 - they can go into pins 20,21 on bottom board
+//volatile = theres no wait
+
+attachInterrupt(digitalPinToInterrupt(cupInterruptPin), cupInterrupt, RISING);
+
 
   bigServo.attach(9);
   smallServo1.attach(10);
