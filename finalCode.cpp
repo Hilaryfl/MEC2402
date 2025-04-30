@@ -6,9 +6,8 @@
 #define M4_PWM 11
 #define M4_DIR 13
 
-// Switch setup
-const int switchPin = 22;  // switch input
-const int ledPin = 23;     // LED output
+// button setup
+const int buttonPin = 22;  // button input
 
 // Servo setup
 Servo bigServo;
@@ -20,8 +19,7 @@ int duty = 0;    // variable to store duty cycle which controls the motor's effe
 
 
 void setup() {
-  pinMode(switchPin, INPUT);   // Read switch state
-  pinMode(ledPin, OUTPUT);     // Control LED
+  pinMode(buttonPin, INPUT);   // Read button state
 
   bigServo.attach(9);
   smallServo1.attach(10);
@@ -36,17 +34,16 @@ void setup() {
 }
 
 void loop() {
-  int switchState = digitalRead(switchPin);
+  int buttonState = digitalRead(buttonPin);
 
-  if (switchState == HIGH) {
-    digitalWrite(ledPin, HIGH);              // Turn LED ON
-    mainFunction();     // CHANGE TO FINAL CODE
+  if (buttonState == HIGH) {
+    mainFunction();     
   } else {
-    digitalWrite(ledPin, LOW);               // Turn LED OFF
+    Serial.println("im broken :(");
   }
 }
 
-void mainFunction() {
+void mainFunction() { // CHANGE TO FINAL CODE
   for (pos = 0; pos <= 90; pos++) {
     bigServo.write(pos);
     delay(15);
